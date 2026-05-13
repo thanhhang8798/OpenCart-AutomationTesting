@@ -82,7 +82,7 @@
                 <configuration>
                     <!-- Run TestNG xml file -->
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/config/${environment}.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/testng/opencart.xml</suiteXmlFile>
                     </suiteXmlFiles>
 
                     <!-- Argument -->

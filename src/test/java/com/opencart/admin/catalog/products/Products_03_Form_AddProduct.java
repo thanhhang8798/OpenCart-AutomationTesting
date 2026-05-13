@@ -11,6 +11,7 @@ import com.opencart.pageObjects.user.UserHomePO;
 import com.opencart.utilities.DataFakerConfig;
 import com.opencart.utilities.PropertiesConfig;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -109,10 +110,10 @@ public class Products_03_Form_AddProduct extends BaseTest {
         userHomePage.clickToSearchIcon();
         verifyTrue(userHomePage.isNewProductDisplayed(productName));
     }
-//    @AfterClass
-//    public void afterClass() {
-//        closeBrowserDriver();
-//    }
+    @AfterClass
+    public void afterClass() {
+        closeBrowserDriver();
+    }
 
     private AdminLoginPO adminLoginPage;
     private AdminDashboardPO adminDashboardPage;
