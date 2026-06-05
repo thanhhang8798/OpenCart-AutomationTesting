@@ -18,8 +18,11 @@ public class UserProductPO extends BasePage {
     }
 
     public void clickToAddToCartByProductName(String productName) {
-//        scrollToElementOnTop(driver, UserProductPUI.DYNAMIC_ADD_TO_CART_BY_NAME, productName);
-//        clickToElement(driver, UserProductPUI.DYNAMIC_ADD_TO_CART_BY_NAME, productName);
-        clickToElementByJS(driver, UserProductPUI.DYNAMIC_ADD_TO_CART_BY_NAME, productName);
+        scrollToBottomPage(driver);
+        clickToElement(driver, UserProductPUI.DYNAMIC_ADD_TO_CART_BY_NAME, productName);
+    }
+
+    public void waitUntilSuccessAlertDisappeared() {
+        waitElementInvisible(driver, UserProductPUI.SUCCESS_ALERT);
     }
 }

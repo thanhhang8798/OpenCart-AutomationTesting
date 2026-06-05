@@ -49,15 +49,18 @@ public class Order_01_OrderProduct extends BaseTest {
         int numberItemBeforeAddToCart = userProductPage.getAddToCartNumberItemText();
 
         userProductPage.clickToAddToCartByProductName(productName);
+        userProductPage.sleepInSecond(2);
+
         int numberItemAfterAddToCart = userProductPage.getAddToCartNumberItemText();
+        System.out.println("after: " + numberItemAfterAddToCart);
 
         verifyTrue(numberItemAfterAddToCart == numberItemBeforeAddToCart + 1);
     }
 
-//    @AfterClass
-//    public void afterClass() {
-//        closeBrowserDriver();
-//    }
+    @AfterClass
+    public void afterClass() {
+        closeBrowserDriver();
+    }
 
     private UserHomePO userHomePage;
     private UserLoginPO userLoginPage;

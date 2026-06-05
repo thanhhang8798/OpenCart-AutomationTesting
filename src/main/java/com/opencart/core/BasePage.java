@@ -201,6 +201,10 @@ public class BasePage {
         return getWebElement(driver, castParameter(locator, restParameter)).isSelected();
     }
 
+    public void scrollToBottomPage(WebDriver driver) {
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,document.body.scrollHeight)");
+    }
+
     public void scrollToElementOnTop(WebDriver driver, String locator) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", getWebElement(driver, locator));
     }
