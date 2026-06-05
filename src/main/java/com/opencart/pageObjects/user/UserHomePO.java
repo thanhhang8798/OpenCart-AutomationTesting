@@ -2,6 +2,7 @@ package com.opencart.pageObjects.user;
 
 import com.opencart.PageUIs.user.UserHomePUI;
 import com.opencart.core.BasePage;
+import com.opencart.pageObjects.PageGenerator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -32,4 +33,16 @@ public class UserHomePO extends BasePage {
         }
         return true;
     }
+
+    public UserLoginPO clickToLoginInDropdown() {
+        waitElementClickable(driver, UserHomePUI.MY_ACCOUNT_BUTTON);
+        clickToElement(driver, UserHomePUI.MY_ACCOUNT_BUTTON);
+        waitElementClickable(driver, UserHomePUI.LOGIN_DROPDOWN);
+        clickToElement(driver, UserHomePUI.LOGIN_DROPDOWN);
+        return PageGenerator.getPage(UserLoginPO.class, driver);
+    }
+
+
+
+
 }

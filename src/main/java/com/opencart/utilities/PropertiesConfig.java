@@ -45,14 +45,26 @@ public class PropertiesConfig {
         else throw new RuntimeException("Url not specified in the properties file.");
     }
 
-    public String getApplicationUserName() {
+    public String getAdminUserName() {
         String username = properties.getProperty("App.AdminUsername");
         if(username != null) return username;
         else throw new RuntimeException("Username not specified in the properties file.");
     }
 
-    public String getApplicationPassword() {
+    public String getAdminPassword() {
         String password = properties.getProperty("App.AdminPassword");
+        if(password != null) return password;
+        else throw new RuntimeException("Password not specified in the properties file.");
+    }
+
+    public String getUserEmailAddress() {
+        String username = properties.getProperty("App.UserEmail");
+        if(username != null) return username;
+        else throw new RuntimeException("Username not specified in the properties file.");
+    }
+
+    public String getUserPassword() {
+        String password = properties.getProperty("App.UserPassword");
         if(password != null) return password;
         else throw new RuntimeException("Password not specified in the properties file.");
     }

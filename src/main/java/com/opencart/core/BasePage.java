@@ -127,6 +127,23 @@ public class BasePage {
         }
     }
 
+    public void selectItemInCustomDropdown(WebDriver driver, String parentLocator, String childLocator, String textItem, String... restParameter) {
+        sleepInSecond(1);
+        clickToElement(driver, castParameter(parentLocator, restParameter));
+
+        new WebDriverWait(driver, Duration.ofSeconds(GlobalConstants.LONG_TIMEOUT))
+                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(getByLocator(childLocator)));
+
+        List<WebElement> allItems = getListElement(driver, childLocator);
+
+        for (WebElement item : allItems) {
+            if (item.getText().equals(textItem)) {
+                item.click();
+                break;
+            }
+        }
+    }
+
     public void checkToCheckboxRadio(WebDriver driver, String locator) {
         if (!isElementSelected(driver, locator)) {
             clickToElement(driver, locator);
@@ -186,6 +203,10 @@ public class BasePage {
 
     public void scrollToElementOnTop(WebDriver driver, String locator) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", getWebElement(driver, locator));
+    }
+
+    public void scrollToElementOnTop(WebDriver driver, String locator, String... restParameter) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", getWebElement(driver, castParameter(locator, restParameter)));
     }
 
     public void scrollToElementOnDown(WebDriver driver, String locator) {

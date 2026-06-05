@@ -1,7 +1,6 @@
 package com.opencart.admin.catalog.products;
 
 import com.opencart.core.BaseTest;
-import com.opencart.core.GlobalConstants;
 import com.opencart.pageObjects.PageGenerator;
 import com.opencart.pageObjects.admin.AdminDashboardPO;
 import com.opencart.pageObjects.admin.AdminLoginPO;
@@ -37,8 +36,8 @@ public class Products_03_Form_AddProduct extends BaseTest {
 
         faker = DataFakerConfig.getFaker();
 
-        adminLoginPage.enterToUserNameTextbox(propertiesConfig.getApplicationUserName());
-        adminLoginPage.enterToPasswordTextbox(propertiesConfig.getApplicationPassword());
+        adminLoginPage.enterToUserNameTextbox(propertiesConfig.getAdminUserName());
+        adminLoginPage.enterToPasswordTextbox(propertiesConfig.getAdminPassword());
         adminDashboardPage = adminLoginPage.clickToLoginButton();
         adminDashboardPage.openPageOnLeftMenuByName("Catalog");
         adminDashboardPage.openPageOnLeftMenuByName("Products");
