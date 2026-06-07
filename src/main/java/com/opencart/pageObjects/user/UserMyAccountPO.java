@@ -24,4 +24,10 @@ public class UserMyAccountPO extends BasePage {
         selectItemInCustomDropdown(driver, UserMyAccountPUI.DYNAMIC_PARENT_PRODUCT_DROPDOWN_BY_NAME, UserMyAccountPUI.CHILD_PRODUCT_DROPDOWN, productMenu, productContainer);
         return PageGenerator.getPage(UserProductPO.class, driver);
     }
+
+    public UserCartCheckoutPO clickToCheckoutInCartDropdown() {
+        waitElementClickable(driver, UserMyAccountPUI.CHECKOUT_IN_CART_DROPDOWN);
+        clickToElement(driver, UserMyAccountPUI.CHECKOUT_IN_CART_DROPDOWN);
+        return PageGenerator.getPage(UserCartCheckoutPO.class, driver);
+    }
 }

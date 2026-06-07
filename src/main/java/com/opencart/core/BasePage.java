@@ -1,7 +1,11 @@
 package com.opencart.core;
 
 import com.opencart.PageUIs.BasePageUI;
+import com.opencart.pageObjects.PageGenerator;
+import com.opencart.pageObjects.user.UserCartCheckoutPO;
+import com.opencart.pageObjects.user.UserShoppingCartPO;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -94,8 +98,16 @@ public class BasePage {
         return getWebElement(driver, locator).getText();
     }
 
+    public String getElementText(WebDriver driver, String locator, String... restParameter) {
+        return getWebElement(driver, castParameter(locator, restParameter)).getText();
+    }
+
     public Dimension getElementSize(WebDriver driver, String locator) {
         return getWebElement(driver, locator).getSize();
+    }
+
+    public int getListElementNumber(WebDriver driver, String locator) {
+        return getListElement(driver, locator).size();
     }
 
     public void selectItemInDropdown(WebDriver driver, String locator, String valueItem) {
@@ -225,6 +237,18 @@ public class BasePage {
         driver.switchTo().defaultContent();
     }
 
+    public void moveToElement(WebDriver driver, String locator) {
+        new Actions(driver).moveToElement(getWebElement(driver, locator)).perform();
+    }
+
+    public void moveToElement(WebDriver driver, String locator, String... restParameter) {
+        new Actions(driver).moveToElement(getWebElement(driver, castParameter(locator, restParameter))).perform();
+    }
+
+    public void actionClick(WebDriver driver, String locator, String... restParameter) {
+        new Actions(driver).click(getWebElement(driver, castParameter(locator, restParameter))).perform();
+    }
+
     public void sleepInSecond(int timeInSecond) {
         try {
             Thread.sleep(timeInSecond * 1000);
@@ -297,5 +321,28 @@ public class BasePage {
         // cắt kí tự xuống dòng (\n) đầu cuối
         fullFileName = fullFileName.trim();
         getWebElement(driver, BasePageUI.UPLOAD_FILE_TYPE).sendKeys(fullFileName);
+    }
+
+    public void clickToCartButton(WebDriver driver) {
+        waitElementClickable(driver, BasePageUI.CART_BUTTON);
+        clickToElement(driver, BasePageUI.CART_BUTTON);
+        sleepInSecond(2);
+    }
+
+    public UserShoppingCartPO clickToViewCart(WebDriver driver) {
+        waitElementClickable(driver, BasePageUI.VIEW_CART_BUTTON_IN_CART_DROPDOWN);
+        clickToElement(driver, BasePageUI.VIEW_CART_BUTTON_IN_CART_DROPDOWN);
+        return PageGenerator.getPage(UserShoppingCartPO.class, driver);
+    }
+
+    public UserCartCheckoutPO clickToCheckoutButton(WebDriver driver) {
+//        waitElementClickable(driver, BasePageUI.CHECKOUT_BUTTON);
+        clickToElementByJS(driver, BasePageUI.CHECKOUT_BUTTON);
+        return PageGenerator.getPage(UserCartCheckoutPO.class, driver);
+    }
+
+    public String getSuccessMessageText(WebDriver driver) {
+        waitElementVisible(driver, BasePageUI.SUCCESS_MESSAGE_TEXT);
+        return getElementText(driver, BasePageUI.SUCCESS_MESSAGE_TEXT);
     }
 }

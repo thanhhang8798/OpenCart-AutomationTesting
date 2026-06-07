@@ -1,0 +1,69 @@
+package com.opencart.pageObjects.user;
+
+import com.opencart.PageUIs.user.UserCartCheckoutPUI;
+import com.opencart.core.BasePage;
+import org.openqa.selenium.WebDriver;
+
+public class UserCartCheckoutPO extends BasePage {
+    WebDriver driver;
+
+    public UserCartCheckoutPO(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void chooseNewAddressRadioButton() {
+        waitElementClickable(driver, UserCartCheckoutPUI.NEW_ADDRESS_RADIO);
+        checkToCheckboxRadio(driver, UserCartCheckoutPUI.NEW_ADDRESS_RADIO);
+    }
+
+    public void enterToTextboxByName(String name, String sendKey) {
+        waitElementVisible(driver, UserCartCheckoutPUI.TEXTBOX_BY_NAME, name);
+        sendKeyToElement(driver, UserCartCheckoutPUI.TEXTBOX_BY_NAME, sendKey, name);
+    }
+
+    public void clickToContinueButton() {
+        waitElementClickable(driver, UserCartCheckoutPUI.COUNTINUE_BUTTON);
+        clickToElement(driver, UserCartCheckoutPUI.COUNTINUE_BUTTON);
+    }
+
+    public void chooseItemInCountryDropdown(String country) {
+        waitElementVisible(driver, UserCartCheckoutPUI.COUNTRY_DROPDOWN);
+        selectItemInDropdown(driver, UserCartCheckoutPUI.COUNTRY_DROPDOWN, country);
+    }
+
+    public void chooseItemInRegionDropdown(String region) {
+        waitElementVisible(driver, UserCartCheckoutPUI.REGION_DROPDOWN);
+        selectItemInDropdown(driver, UserCartCheckoutPUI.REGION_DROPDOWN, region);
+    }
+
+    public void clickToChooseShippingMethod() {
+        waitElementClickable(driver, UserCartCheckoutPUI.CHOOSE_SHIPPING_METHOD_BUTTON);
+        clickToElement(driver, UserCartCheckoutPUI.CHOOSE_SHIPPING_METHOD_BUTTON);
+    }
+
+    public double getShippingRate() {
+        waitElementVisible(driver, UserCartCheckoutPUI.SHIPPING_RATE_TEXT_IN_SHIPPING_METHOD_POPUP);
+        return Double.parseDouble(getElementText(driver, UserCartCheckoutPUI.SHIPPING_RATE_TEXT_IN_SHIPPING_METHOD_POPUP)
+                .split("\\$")[1].replace(",",""));
+    }
+
+    public void clickToChoosePaymentMethod() {
+        waitElementClickable(driver, UserCartCheckoutPUI.CHOOSE_PAYMENT_METHOD_BUTTON);
+        clickToElement(driver, UserCartCheckoutPUI.CHOOSE_PAYMENT_METHOD_BUTTON);
+    }
+
+    public void clickToContinueButtonInShippingMethodPopup() {
+        waitElementClickable(driver, UserCartCheckoutPUI.COUNTINUE_BUTTON_IN_SHIPPING_METHOD_POPUP);
+        clickToElement(driver, UserCartCheckoutPUI.COUNTINUE_BUTTON_IN_SHIPPING_METHOD_POPUP);
+    }
+
+    public String getShippingMethodTextInPopup() {
+        waitElementVisible(driver, UserCartCheckoutPUI.SHIPPING_RATE_TEXT_IN_SHIPPING_METHOD_POPUP);
+        return getElementText(driver, UserCartCheckoutPUI.SHIPPING_RATE_TEXT_IN_SHIPPING_METHOD_POPUP);
+    }
+
+    public String getShippingMethodText(String value) {
+        waitElementVisible(driver, UserCartCheckoutPUI.SHIPPING_METHOD_TEXT);
+        return getElementDOMProperty(driver, UserCartCheckoutPUI.SHIPPING_METHOD_TEXT, value);
+    }
+}

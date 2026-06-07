@@ -55,6 +55,22 @@ public class DataFakerConfig {
         return faker.restaurant().description();
     }
 
+    public String getStreetAddress() {
+        return faker.address().streetAddress();
+    }
+
+    public String getCityAddress() {
+        return faker.address().city();
+    }
+
+    public String getCountry() {
+        return faker.country().name();
+    }
+
+    public String getCountryCode() {
+        return faker.country().countryCode2();
+    }
+
 }
 
 

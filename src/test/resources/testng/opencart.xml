@@ -10,9 +10,7 @@
     <test name="Run on Chrome browser">
         <parameter name="browser" value="CHROME"></parameter>
         <classes>
-            <class name="com.opencart.user.order.Order_01_OrderProduct"/>
+            <class name="com.opencart.user.order.Order_02_OrderItems"/>
         </classes>
     </test>
-
-
 </suite>
