@@ -219,6 +219,10 @@ public class BasePage {
         return getWebElement(driver, castParameter(locator, restParameter)).isSelected();
     }
 
+    public void scrollToTopPage(WebDriver driver) {
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -document.body.scrollHeight)");
+    }
+
     public void scrollToBottomPage(WebDriver driver) {
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0,document.body.scrollHeight)");
     }
@@ -358,8 +362,9 @@ public class BasePage {
     }
 
     public void waitMessageAlertDisappeared(WebDriver driver) {
-        overrideGlobalTimeout(driver, 3);
+        overrideGlobalTimeout(driver, GlobalConstants.SHORT_TIMEOUT);
         waitElementInvisible(driver, BasePageUI.SUCCESS_MESSAGE_TEXT);
+        overrideGlobalTimeout(driver, GlobalConstants.LONG_TIMEOUT);
     }
 
     public String getTextInCartButton(WebDriver driver) {

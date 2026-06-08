@@ -1,13 +1,16 @@
 package com.opencart.user.order;
 
 import com.opencart.core.BaseTest;
+import com.opencart.core.GlobalConstants;
 import com.opencart.pageObjects.PageGenerator;
+import com.opencart.pageObjects.admin.AdminDashboardPO;
 import com.opencart.pageObjects.admin.AdminLoginPO;
+import com.opencart.pageObjects.admin.sales.AdminOrderDetailPO;
+import com.opencart.pageObjects.admin.sales.AdminOrdersPO;
 import com.opencart.pageObjects.user.*;
 import com.opencart.utilities.DataFakerConfig;
 import com.opencart.utilities.PropertiesConfig;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -20,19 +23,22 @@ public class Order_02_OrderItems extends BaseTest {
     String productName, productMenu, productContainer;
     String firstName, lastName, address1, city, postCode, country, region;
     double productPrice;
+    int orderId;
 
     @Parameters({"environment", "browser"})
     @BeforeClass
     public void beforeClass(String environment, String browser) {
         propertiesConfig = PropertiesConfig.getProperties(environment);
-        userDriver = getBrowserDriver(propertiesConfig.getApplicationUserUrl(), browser);
-        userHomePage = PageGenerator.getPage(UserHomePO.class, userDriver);
         faker = DataFakerConfig.getFaker();
 
-//        adminDriver = getBrowserDriver(propertiesConfig.getApplicationAdminUrl(), browser);
-//        adminLoginPage = PageGenerator.getPage(AdminLoginPO.class, adminDriver);
+        adminDriver = getBrowserDriver(propertiesConfig.getApplicationAdminUrl(), browser);
+        adminLoginPage = PageGenerator.getPage(AdminLoginPO.class, adminDriver);
+        adminLoginPage.enterToUserNameTextbox(GlobalConstants.ADMIN_USERNAME);
+        adminLoginPage.enterToPasswordTextbox(GlobalConstants.ADMIN_PASSWORD);
+        adminDashboardPage = adminLoginPage.clickToLoginButton();
 
-
+        userDriver = getBrowserDriver(propertiesConfig.getApplicationUserUrl(), browser);
+        userHomePage = PageGenerator.getPage(UserHomePO.class, userDriver);
         userLoginPage = userHomePage.clickToLoginInDropdown();
         userLoginPage.enterToEmailAddressTextbox(propertiesConfig.getUserEmailAddress());
         userLoginPage.enterToEmailPasswordTextbox(propertiesConfig.getUserPassword());
@@ -60,7 +66,7 @@ public class Order_02_OrderItems extends BaseTest {
         address1 = faker.getStreetAddress();
     }
 
-    @Test()
+    @Test
     public void Order_01_ShippingAddress() {
         userCartCheckoutPage.chooseNewAddressRadioButton();
         userCartCheckoutPage.enterToTextboxByName("firstname", firstName);
@@ -105,9 +111,31 @@ public class Order_02_OrderItems extends BaseTest {
     @Test
     public void Order_03_OrderHistory() {
         userOrderHistoryPage = userCartCheckoutPage.chooseItemInMyAccountDropdown(userDriver,"Order History");
-        int orderNumber = userOrderHistoryPage.getOrderNumber("Order ID");
-        System.out.println("orderNumber: " + orderNumber);
+        orderId = userOrderHistoryPage.getOrderNumber("Order ID");
+        System.out.println("orderNumber: " + orderId);
         verifyEquals(userOrderHistoryPage.getOrderStatus("Status"), "Pending");
+    }
+
+    @Test
+    public void Order_04_AdminChangeOrderStatus() {
+        adminDashboardPage.openPageOnLeftMenuByName("Sales");
+        adminDashboardPage.openPageOnLeftMenuByName("Orders");
+        adminOrdersPage = PageGenerator.getPage(AdminOrdersPO.class, adminDriver);
+        verifyEquals(adminOrdersPage.getOrderStatusByOrderId(String.valueOf(orderId)), "Pending");
+
+        adminOrderDetailPage = adminOrdersPage.clickToViewButtonByOrderId(String.valueOf(orderId));
+        adminOrderDetailPage.selectItemInOrderStatusDropdown("Processing");
+        adminOrderDetailPage.clickToAddHistoryButton();
+
+        verifyEquals(adminOrderDetailPage.getSuccessMessageText(adminDriver), "Success: You have modified orders!");
+        adminOrderDetailPage.waitMessageAlertDisappeared(adminDriver);
+        verifyEquals(adminOrderDetailPage.getFirstStatusInHistoryTable("Status"), "Processing");
+
+        adminOrdersPage = adminOrderDetailPage.clickToBackButton();
+        verifyEquals(adminOrdersPage.getOrderStatusByOrderId(String.valueOf(orderId)), "Processing");
+
+        userOrderHistoryPage.refreshPage(userDriver);
+        verifyEquals(userOrderHistoryPage.getOrderStatus("Status"), "Processing");
     }
 
 //    @AfterClass
@@ -119,8 +147,12 @@ public class Order_02_OrderItems extends BaseTest {
     private UserLoginPO userLoginPage;
     private UserMyAccountPO userMyAccountPage;
     private UserCartCheckoutPO userCartCheckoutPage;
-    private AdminLoginPO adminLoginPage;
     private UserProductDetailPO userProductDetailPage;
     private UserProductPO userProductPage;
     private UserOrderHistoryPO userOrderHistoryPage;
+
+    private AdminLoginPO adminLoginPage;
+    private AdminDashboardPO adminDashboardPage;
+    private AdminOrdersPO adminOrdersPage;
+    private AdminOrderDetailPO adminOrderDetailPage;
 }

@@ -97,7 +97,7 @@ public class Products_03_Form_AddProduct extends BaseTest {
     @Test
     public void Form_02_NewProductAtListProductPage(){
         adminProductFormPage.openPageOnLeftMenuByName("Products");
-        adminProductListPage = PageGenerator.getPage(adminProductListPage.getClass(),adminDriver);
+        adminProductListPage = PageGenerator.getPage(adminProductListPage.getClass(), adminDriver);
         adminProductListPage.enterToProductNameTextbox(productName);
         adminProductListPage.clickToFilterButton();
         verifyTrue(adminProductListPage.isProductNameSearchResultDisplayed(productName));
