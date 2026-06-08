@@ -25,9 +25,5 @@ public class UserMyAccountPO extends BasePage {
         return PageGenerator.getPage(UserProductPO.class, driver);
     }
 
-    public UserCartCheckoutPO clickToCheckoutInCartDropdown() {
-        waitElementClickable(driver, UserMyAccountPUI.CHECKOUT_IN_CART_DROPDOWN);
-        clickToElement(driver, UserMyAccountPUI.CHECKOUT_IN_CART_DROPDOWN);
-        return PageGenerator.getPage(UserCartCheckoutPO.class, driver);
-    }
+
 }

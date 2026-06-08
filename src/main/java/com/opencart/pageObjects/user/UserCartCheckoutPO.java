@@ -66,4 +66,37 @@ public class UserCartCheckoutPO extends BasePage {
         waitElementVisible(driver, UserCartCheckoutPUI.SHIPPING_METHOD_TEXT);
         return getElementDOMProperty(driver, UserCartCheckoutPUI.SHIPPING_METHOD_TEXT, value);
     }
+
+    public String getPaymentMethodTextInPopup() {
+        waitElementVisible(driver, UserCartCheckoutPUI.OPTION_IN_PAYMENT_METHOD_POPUP);
+        return getElementText(driver, UserCartCheckoutPUI.OPTION_IN_PAYMENT_METHOD_POPUP);
+    }
+
+    public void clickToContinueButtonInPaymentMethodPopup() {
+        waitElementClickable(driver, UserCartCheckoutPUI.COUNTINUE_BUTTON_IN_PAYMENT_METHOD_POPUP);
+        clickToElement(driver, UserCartCheckoutPUI.COUNTINUE_BUTTON_IN_PAYMENT_METHOD_POPUP);
+    }
+
+    public String getPaymentMethodText(String value) {
+        waitElementVisible(driver, UserCartCheckoutPUI.PAYMENT_METHOD_TEXT);
+        return getElementDOMProperty(driver, UserCartCheckoutPUI.PAYMENT_METHOD_TEXT, value);
+    }
+
+    public double getFlatShippingRate() {
+        waitElementVisible(driver, UserCartCheckoutPUI.PLAT_SHIPPING_RATE);
+        return Double.parseDouble(getElementText(driver, UserCartCheckoutPUI.PLAT_SHIPPING_RATE)
+                .replace("$","").replace(",",""));
+    }
+
+    public void clickToConfirmOrderButton() {
+        waitElementClickable(driver, UserCartCheckoutPUI.CONFIRM_ORDER_BUTTON);
+        clickToElement(driver, UserCartCheckoutPUI.CONFIRM_ORDER_BUTTON);
+    }
+
+    public String getOrderSuccessContent() {
+        waitElementVisible(driver, UserCartCheckoutPUI.ORDER_SUCCESS_CONTENT_TEXT);
+        return getElementText(driver, UserCartCheckoutPUI.ORDER_SUCCESS_CONTENT_TEXT);
+    }
+
+
 }

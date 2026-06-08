@@ -37,14 +37,19 @@ public class Order_02_OrderItems extends BaseTest {
         userLoginPage.enterToEmailAddressTextbox(propertiesConfig.getUserEmailAddress());
         userLoginPage.enterToEmailPasswordTextbox(propertiesConfig.getUserPassword());
         userMyAccountPage = userLoginPage.clickToLoginButton();
-        userMyAccountPage.sleepInSecond(2);
-
-        userMyAccountPage.clickToCartButton(userDriver);
-        userCartCheckoutPage = userMyAccountPage.clickToCheckoutInCartDropdown();
 
         productName = "iMac";
         productMenu = "Mac (1)";
         productContainer = "Desktops";
+
+        userProductPage = userMyAccountPage.chooseProductAtMenu(productContainer, productMenu);
+        userProductDetailPage = userProductPage.clickToProductByName(productName);
+        userProductDetailPage.clickToAddToCartButton();
+        userProductDetailPage.waitMessageAlertDisappeared(userDriver);
+
+        userProductDetailPage.clickToCartButton(userDriver);
+        userProductDetailPage.sleepInSecond(1);
+        userCartCheckoutPage = userProductDetailPage.clickToCheckoutInCartDropdown();
 
         firstName = faker.getFirstName();
         lastName = faker.getLastName();
@@ -68,24 +73,41 @@ public class Order_02_OrderItems extends BaseTest {
         userCartCheckoutPage.clickToContinueButton();
 
         verifyEquals(userCartCheckoutPage.getSuccessMessageText(userDriver),"Success: You have changed shipping address!");
+        userCartCheckoutPage.waitMessageAlertDisappeared(userDriver);
     }
 
     @Test
-    public void Order_02_Method() {
+    public void Order_02_OrderSuccess() {
         userCartCheckoutPage.clickToChooseShippingMethod();
         double shippingRate = userCartCheckoutPage.getShippingRate();
         String shippingMehthod = userCartCheckoutPage.getShippingMethodTextInPopup();
         userCartCheckoutPage.clickToContinueButtonInShippingMethodPopup();
+
         verifyEquals(userCartCheckoutPage.getSuccessMessageText(userDriver), "Success: You have changed shipping method!");
+        userCartCheckoutPage.waitMessageAlertDisappeared(userDriver);
         verifyEquals(userCartCheckoutPage.getShippingMethodText("value"), shippingMehthod);
+        verifyTrue(userCartCheckoutPage.getFlatShippingRate() == shippingRate);
 
         userCartCheckoutPage.clickToChoosePaymentMethod();
+        verifyEquals(userCartCheckoutPage.getPaymentMethodTextInPopup(), "Cash On Delivery");
+        userCartCheckoutPage.clickToContinueButtonInPaymentMethodPopup();
+        verifyEquals(userCartCheckoutPage.getSuccessMessageText(userDriver), "Success: You have changed payment method!");
+        userCartCheckoutPage.waitMessageAlertDisappeared(userDriver);
+        verifyEquals(userCartCheckoutPage.getPaymentMethodText("value"), "Cash On Delivery");
 
+        userCartCheckoutPage.clickToConfirmOrderButton();
+        verifyEquals(userCartCheckoutPage.getOrderSuccessContent(), "Your order has been placed!");
+
+        userCartCheckoutPage.sleepInSecond(2);
+        verifyEquals(userCartCheckoutPage.getTextInCartButton(userDriver), "0 item(s) - $0.00");
     }
 
     @Test
-    public void Order_03_ViewCart() {
-
+    public void Order_03_OrderHistory() {
+        userOrderHistoryPage = userCartCheckoutPage.chooseItemInMyAccountDropdown(userDriver,"Order History");
+        int orderNumber = userOrderHistoryPage.getOrderNumber("Order ID");
+        System.out.println("orderNumber: " + orderNumber);
+        verifyEquals(userOrderHistoryPage.getOrderStatus("Status"), "Pending");
     }
 
 //    @AfterClass
@@ -98,4 +120,7 @@ public class Order_02_OrderItems extends BaseTest {
     private UserMyAccountPO userMyAccountPage;
     private UserCartCheckoutPO userCartCheckoutPage;
     private AdminLoginPO adminLoginPage;
+    private UserProductDetailPO userProductDetailPage;
+    private UserProductPO userProductPage;
+    private UserOrderHistoryPO userOrderHistoryPage;
 }

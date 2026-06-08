@@ -40,15 +40,16 @@ public class Order_01_AddToCart extends BaseTest {
         userProductPage = userMyAccountPage.chooseProductAtMenu(productContainer, productMenu);
         productPrice = userProductPage.getProductPrice(productName);
 
-        int numberItemBeforeAddToCart = userProductPage.getItemNumberTextAtCartButton();
-        double priceBeforeAddToCart = userProductPage.getPriceTextAtCartButton();
+        userProductDetailPage = userProductPage.clickToProductByName(productName);
+        int numberItemBeforeAddToCart = userProductDetailPage.getItemNumberTextAtCartButton();
+        double priceBeforeAddToCart = userProductDetailPage.getPriceTextAtCartButton();
 
-        userProductPage.clickToAddToCartByProductName(productName);
-        verifyTrue(userProductPage.isAddToCartSuccessAlertDisplayed());
-        userProductPage.sleepInSecond(2);
+        userProductDetailPage.clickToAddToCartButton();
+        verifyEquals(userProductDetailPage.getSuccessMessageText(userDriver), "Success: You have added " + productName + " to your shopping cart!");
+        userProductDetailPage.waitMessageAlertDisappeared(userDriver);
 
-        int numberItemAfterAddToCart = userProductPage.getItemNumberTextAtCartButton();
-        double priceAfterAddToCart = userProductPage.getPriceTextAtCartButton();
+        int numberItemAfterAddToCart = userProductDetailPage.getItemNumberTextAtCartButton();
+        double priceAfterAddToCart = userProductDetailPage.getPriceTextAtCartButton();
 
         verifyTrue(numberItemAfterAddToCart == numberItemBeforeAddToCart + 1);
         verifyTrue(priceAfterAddToCart == priceBeforeAddToCart + productPrice);
@@ -56,17 +57,17 @@ public class Order_01_AddToCart extends BaseTest {
 
     @Test
     public void Order_02_DisplayItemsInCartDropdown() {
-        userProductPage.clickToCartButton(userDriver);
-        verifyTrue(userProductPage.isItemAddedToCardDisplayed(productName));
+        userProductDetailPage.clickToCartButton(userDriver);
+        verifyTrue(userProductDetailPage.isItemAddedToCardDisplayed(productName));
 
-        double totalPrice = userProductPage.getTotalPriceInCartDropdown();
-        double sumPrice = userProductPage.sumAllPriceInCartDropdown();
+        double totalPrice = userProductDetailPage.getTotalPriceInCartDropdown();
+        double sumPrice = userProductDetailPage.sumAllPriceInCartDropdown();
         verifyEquals(totalPrice, sumPrice);
     }
 
     @Test
     public void Order_03_ViewCart() {
-        userShoppingCartPage = userProductPage.clickToViewCart(userDriver);
+        userShoppingCartPage = userProductDetailPage.clickToViewCart(userDriver);
         verifyTrue(userShoppingCartPage.isItemAddedToCardDisplayed(productName));
 
         double totalPrice = userShoppingCartPage.getTotalPriceInCartDropdown();
@@ -84,5 +85,5 @@ public class Order_01_AddToCart extends BaseTest {
     private UserMyAccountPO userMyAccountPage;
     private UserProductPO userProductPage;
     private UserShoppingCartPO userShoppingCartPage;
-    private AdminLoginPO adminLoginPage;
+    private UserProductDetailPO userProductDetailPage;
 }

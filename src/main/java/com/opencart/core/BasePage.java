@@ -1,8 +1,10 @@
 package com.opencart.core;
 
 import com.opencart.PageUIs.BasePageUI;
+import com.opencart.PageUIs.user.UserCartCheckoutPUI;
 import com.opencart.pageObjects.PageGenerator;
 import com.opencart.pageObjects.user.UserCartCheckoutPO;
+import com.opencart.pageObjects.user.UserOrderHistoryPO;
 import com.opencart.pageObjects.user.UserShoppingCartPO;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -108,6 +110,10 @@ public class BasePage {
 
     public int getListElementNumber(WebDriver driver, String locator) {
         return getListElement(driver, locator).size();
+    }
+
+    public int getListElementNumber(WebDriver driver, String locator, String... restParameter) {
+        return getListElement(driver, castParameter(locator, restParameter)).size();
     }
 
     public void selectItemInDropdown(WebDriver driver, String locator, String valueItem) {
@@ -257,6 +263,10 @@ public class BasePage {
         }
     }
 
+    private void overrideGlobalTimeout(WebDriver driver, long timeInSecond) {
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeInSecond));
+    }
+
     public WebElement waitElementVisible(WebDriver driver, String locator) {
         return new WebDriverWait(driver, Duration.ofSeconds(LONG_TIMEOUT)).until(ExpectedConditions.visibilityOfElementLocated(getByLocator(locator)));
     }
@@ -299,6 +309,7 @@ public class BasePage {
     }
 
     public boolean waitListElementInvisible(WebDriver driver, String locator) {
+
         return new WebDriverWait(driver, Duration.ofSeconds(LONG_TIMEOUT)).until(ExpectedConditions.invisibilityOfAllElements(getListElement(driver, locator)));
     }
 
@@ -344,5 +355,21 @@ public class BasePage {
     public String getSuccessMessageText(WebDriver driver) {
         waitElementVisible(driver, BasePageUI.SUCCESS_MESSAGE_TEXT);
         return getElementText(driver, BasePageUI.SUCCESS_MESSAGE_TEXT);
+    }
+
+    public void waitMessageAlertDisappeared(WebDriver driver) {
+        overrideGlobalTimeout(driver, 3);
+        waitElementInvisible(driver, BasePageUI.SUCCESS_MESSAGE_TEXT);
+    }
+
+    public String getTextInCartButton(WebDriver driver) {
+        waitElementVisible(driver, BasePageUI.CART_BUTTON);
+        return getElementText(driver, BasePageUI.CART_BUTTON);
+    }
+
+    public UserOrderHistoryPO chooseItemInMyAccountDropdown(WebDriver driver, String item) {
+        waitElementClickable(driver, BasePageUI.PARENT_MY_ACCOUNT_DROPDOWN);
+        selectItemInCustomDropdown(driver, BasePageUI.PARENT_MY_ACCOUNT_DROPDOWN, BasePageUI.CHILD_MY_ACCOUNT_DROPDOWN, item);
+        return PageGenerator.getPage(UserOrderHistoryPO.class, driver);
     }
 }
