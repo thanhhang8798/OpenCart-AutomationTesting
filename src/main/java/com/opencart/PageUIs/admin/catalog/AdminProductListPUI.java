@@ -1,7 +1,7 @@
 package com.opencart.PageUIs.admin.catalog;
 
 public class AdminProductListPUI {
-    public static final String FILTER_BUTTON = "id=button-filter";
+    public static final String FILTER_BUTTON = "xpath=//button[@id='button-filter']";
     public static final String RESET_SEARCH_BUTTON = "CSS=button[type='reset']";
 
     public static final String PRODUCT_NAME_TEXTBOX = "id=input-name";

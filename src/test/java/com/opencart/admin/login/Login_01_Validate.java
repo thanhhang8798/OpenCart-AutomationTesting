@@ -11,15 +11,15 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class Login_01_Validate extends BaseTest {
-    private WebDriver driver;
+    private WebDriver adminDriver;
     private PropertiesConfig propertiesConfig;
 
     @Parameters({"environment", "browser"})
     @BeforeClass
     public void beforeClass(String environment, String browser) {
         propertiesConfig = PropertiesConfig.getProperties(environment);
-        driver = getBrowserDriver(propertiesConfig.getApplicationAdminUrl(), browser);
-        adminLoginPage = PageGenerator.getPage(AdminLoginPO.class, driver);
+        adminDriver = getBrowserDriver(propertiesConfig.getApplicationAdminUrl(), browser);
+        adminLoginPage = PageGenerator.getPage(AdminLoginPO.class, adminDriver);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class Login_01_Validate extends BaseTest {
 
     @AfterClass
     public void afterClass() {
-        closeBrowserDriver();
+        closeBrowserDriver(adminDriver);
     }
 
     private AdminLoginPO adminLoginPage;

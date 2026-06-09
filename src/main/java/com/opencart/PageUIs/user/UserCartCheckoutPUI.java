@@ -18,7 +18,7 @@ public class UserCartCheckoutPUI {
     public static final String COUNTINUE_BUTTON_IN_PAYMENT_METHOD_POPUP = "id=button-payment-method";
 
     public static final String PLAT_SHIPPING_RATE = "XPATH=//div[@id='checkout-confirm']//td[contains(.,'Flat Shipping Rate')]/following-sibling::td";
-    public static final String CONFIRM_ORDER_BUTTON = "id=button-confirm";
+    public static final String CONFIRM_ORDER_BUTTON = "xpath=//button[@id='button-confirm']";
     public static final String ORDER_SUCCESS_CONTENT_TEXT = "css=div#content>h1";
 
 }

@@ -1,16 +1,21 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
-<suite name="OrangeHRM - UI automation test" verbose="1">
+<suite name="OpenCart - UI automation test" verbose="1">
     <parameter name="environment" value="localhost"></parameter>
 
     <listeners>
         <listener class-name="com.opencart.core.MethodListener"></listener>
+        <listener class-name="com.opencart.reportConfig.AllureTestListener"></listener>
     </listeners>
 
     <test name="Run on Chrome browser">
         <parameter name="browser" value="CHROME"></parameter>
         <classes>
+            <class name="com.opencart.user.order.Order_01_AddToCart"/>
             <class name="com.opencart.user.order.Order_02_OrderItems"/>
+            <class name="com.opencart.admin.catalog.products.Products_01_List_Filter"/>
+            <class name="com.opencart.admin.catalog.products.Products_02_List_Actions"/>
+            <class name="com.opencart.admin.catalog.products.Products_03_Form_AddProduct"/>
         </classes>
     </test>
 </suite>

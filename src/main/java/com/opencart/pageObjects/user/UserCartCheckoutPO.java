@@ -90,8 +90,7 @@ public class UserCartCheckoutPO extends BasePage {
 
     public void clickToConfirmOrderButton() {
         scrollToBottomPage(driver);
-        waitElementVisible(driver, UserCartCheckoutPUI.CONFIRM_ORDER_BUTTON);
-        clickToElement(driver, UserCartCheckoutPUI.CONFIRM_ORDER_BUTTON);
+        clickToElementByJS(driver, UserCartCheckoutPUI.CONFIRM_ORDER_BUTTON);
     }
 
     public String getOrderSuccessContent() {

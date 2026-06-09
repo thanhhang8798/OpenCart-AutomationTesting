@@ -4,7 +4,9 @@ import com.opencart.browserFactory.*;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.testng.annotations.BeforeSuite;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
@@ -39,7 +41,7 @@ public class BaseTest {
         return driver;
     }
 
-    protected void closeBrowserDriver() {
+    protected void closeBrowserDriver(WebDriver driver) {
         String cmd = null;
         try {
             String osName = System.getProperty("os.name").toLowerCase();
@@ -115,4 +117,27 @@ public class BaseTest {
         }
         return pass;
     }
+
+//    @BeforeSuite
+//    public void deleteFileInReport() {
+//        // Remove all file in Allure attachment (json file)
+//        deleteAllFileInFolder("htmlAllure");
+//    }
+//
+//    public void deleteAllFileInFolder(String folderName) {
+//        try {
+//            String pathFolderDownload = GlobalConstants.PROJECT_PATH + File.separator + folderName;
+//            File file = new File(pathFolderDownload);
+//            File[] listOfFiles = file.listFiles();
+//            if (listOfFiles.length != 0) {
+//                for (int i = 0; i < listOfFiles.length; i++) {
+//                    if (listOfFiles[i].isFile() && !listOfFiles[i].getName().equals("environment.properties")) {
+//                        new File(listOfFiles[i].toString()).delete();
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.print(e.getMessage());
+//        }
+//    }
 }

@@ -77,7 +77,7 @@ public class Order_01_AddToCart extends BaseTest {
 
     @AfterClass
     public void afterClass() {
-        closeBrowserDriver();
+        closeBrowserDriver(userDriver);
     }
 
     private UserHomePO userHomePage;

@@ -15,7 +15,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class Products_02_List_Actions extends BaseTest {
-    private WebDriver driver;
+    private WebDriver adminDriver;
     private PropertiesConfig propertiesConfig;
     String oneItemCheckbox, cloneItem, deleteItem, editItem;
 
@@ -23,15 +23,15 @@ public class Products_02_List_Actions extends BaseTest {
     @BeforeClass
     public void beforeClass(String environment, String browser) {
         propertiesConfig = PropertiesConfig.getProperties(environment);
-        driver = getBrowserDriver(propertiesConfig.getApplicationAdminUrl(), browser);
-        adminLoginPage = PageGenerator.getPage(AdminLoginPO.class, driver);
+        adminDriver = getBrowserDriver(propertiesConfig.getApplicationAdminUrl(), browser);
+        adminLoginPage = PageGenerator.getPage(AdminLoginPO.class, adminDriver);
 
         adminLoginPage.enterToUserNameTextbox(GlobalConstants.ADMIN_USERNAME);
         adminLoginPage.enterToPasswordTextbox(GlobalConstants.ADMIN_PASSWORD);
         adminDashboardPage = adminLoginPage.clickToLoginButton();
         adminDashboardPage.openPageOnLeftMenuByName("Catalog");
         adminDashboardPage.openPageOnLeftMenuByName("Products");
-        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,driver);
+        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class, adminDriver);
 
         oneItemCheckbox = "HTC Touch HD";
         cloneItem = "HP LP3065";
@@ -84,7 +84,7 @@ public class Products_02_List_Actions extends BaseTest {
         adminProductFormPage = adminProductListPage.clickToAddNewItemButton();
         verifyEquals(adminProductFormPage.getProductPageHeader(),"Add Product");
         adminProductFormPage.openPageOnLeftMenuByName("Products");
-        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,driver);
+        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,adminDriver);
     }
 
     @Test
@@ -92,12 +92,12 @@ public class Products_02_List_Actions extends BaseTest {
         adminProductFormPage = adminProductListPage.clickToEditItemButton(editItem);
         verifyEquals(adminProductFormPage.getProductPageHeader(),"Edit Product");
         adminProductFormPage.openPageOnLeftMenuByName("Products");
-        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,driver);
+        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,adminDriver);
     }
 
     @AfterClass
     public void afterClass() {
-        closeBrowserDriver();
+        closeBrowserDriver(adminDriver);
     }
 
     private AdminLoginPO adminLoginPage;

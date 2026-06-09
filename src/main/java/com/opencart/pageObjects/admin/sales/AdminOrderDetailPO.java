@@ -33,8 +33,7 @@ public class AdminOrderDetailPO extends BasePage {
 
     public AdminOrdersPO clickToBackButton() {
         scrollToTopPage(driver);
-        waitElementClickable(driver, AdminOrderDetailPUI.BACK_BUTTON);
-        clickToElement(driver, AdminOrderDetailPUI.BACK_BUTTON);
+        clickToElementByJS(driver, AdminOrderDetailPUI.BACK_BUTTON);
         return PageGenerator.getPage(AdminOrdersPO.class, driver);
     }
 }

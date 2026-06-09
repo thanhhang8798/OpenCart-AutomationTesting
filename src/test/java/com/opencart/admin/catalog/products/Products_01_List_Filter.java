@@ -13,7 +13,7 @@ import org.testng.annotations.*;
 import java.util.List;
 
 public class Products_01_List_Filter extends BaseTest {
-    private WebDriver driver;
+    private WebDriver adminDriver;
     private PropertiesConfig propertiesConfig;
     String productNameSearch, modelSearch, categorySearch, priceTo, priceFrom, manufacturerSearch, quantityFrom, statusSearch;
 
@@ -21,15 +21,15 @@ public class Products_01_List_Filter extends BaseTest {
     @BeforeClass
     public void beforeClass(String environment, String browser) {
         propertiesConfig = PropertiesConfig.getProperties(environment);
-        driver = getBrowserDriver(propertiesConfig.getApplicationAdminUrl(), browser);
-        adminLoginPage = PageGenerator.getPage(AdminLoginPO.class, driver);
+        adminDriver = getBrowserDriver(propertiesConfig.getApplicationAdminUrl(), browser);
+        adminLoginPage = PageGenerator.getPage(AdminLoginPO.class, adminDriver);
 
         adminLoginPage.enterToUserNameTextbox(GlobalConstants.ADMIN_USERNAME);
         adminLoginPage.enterToPasswordTextbox(GlobalConstants.ADMIN_PASSWORD);
         adminDashboardPage = adminLoginPage.clickToLoginButton();
         adminDashboardPage.openPageOnLeftMenuByName("Catalog");
         adminDashboardPage.openPageOnLeftMenuByName("Products");
-        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,driver);
+        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,adminDriver);
 
         productNameSearch = "iPod";
         modelSearch = "mm";
@@ -77,7 +77,7 @@ public class Products_01_List_Filter extends BaseTest {
     @Test
     public void Products_05_Filter_Status() {
         adminProductListPage.openPageOnLeftMenuByName("Products");
-        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,driver);
+        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,adminDriver);
         adminProductListPage.selectItemInStatusrDropdown(statusSearch);
         adminProductListPage.clickToFilterButton();
         List<String> actualProducts = adminProductListPage.getProductsSearchResultOnUI();
@@ -98,7 +98,7 @@ public class Products_01_List_Filter extends BaseTest {
     @Test
     public void Products_07_Filter_Price() {
         adminProductListPage.openPageOnLeftMenuByName("Products");
-        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,driver);
+        adminProductListPage = PageGenerator.getPage(AdminProductListPO.class,adminDriver);
         adminProductListPage.enterToPriceFrom(priceFrom);
         adminProductListPage.enterToPriceTo(priceTo);
         adminProductListPage.clickToFilterButton();
@@ -107,7 +107,7 @@ public class Products_01_List_Filter extends BaseTest {
 
     @AfterClass
     public void afterClass() {
-        closeBrowserDriver();
+        closeBrowserDriver(adminDriver);
     }
 
     private AdminLoginPO adminLoginPage;

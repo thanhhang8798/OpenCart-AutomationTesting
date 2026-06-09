@@ -26,8 +26,7 @@ public class AdminProductListPO extends LeftMenuPageNavigationMenuPO {
 
     public void clickToFilterButton() {
         scrollToElementOnTop(driver, AdminProductListPUI.FILTER_BUTTON);
-        waitElementClickable(driver, AdminProductListPUI.FILTER_BUTTON);
-        clickToElement(driver, AdminProductListPUI.FILTER_BUTTON);
+        clickToElementByJS(driver, AdminProductListPUI.FILTER_BUTTON);
         sleepInSecond(2);
     }
 
@@ -73,7 +72,7 @@ public class AdminProductListPO extends LeftMenuPageNavigationMenuPO {
     }
 
     public List<String> getProductsSearchResultOnUI() {
-        waitElementVisible(driver, AdminProductListPUI.PRODUCT_NAME_SEARCH_BY_INDEX);
+        waitListElementVisible(driver, AdminProductListPUI.PRODUCT_NAME_SEARCH_BY_INDEX);
         List<WebElement> elements = getListElement(driver, AdminProductListPUI.PRODUCT_NAME_SEARCH_BY_INDEX);
         List<String> productNames = new ArrayList<>();
         for (WebElement e : elements) {

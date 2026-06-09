@@ -11,6 +11,7 @@ import com.opencart.pageObjects.user.*;
 import com.opencart.utilities.DataFakerConfig;
 import com.opencart.utilities.PropertiesConfig;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -124,24 +125,25 @@ public class Order_02_OrderItems extends BaseTest {
         verifyEquals(adminOrdersPage.getOrderStatusByOrderId(String.valueOf(orderId)), "Pending");
 
         adminOrderDetailPage = adminOrdersPage.clickToViewButtonByOrderId(String.valueOf(orderId));
-        adminOrderDetailPage.selectItemInOrderStatusDropdown("Processing");
+        adminOrderDetailPage.selectItemInOrderStatusDropdown("Shipped");
         adminOrderDetailPage.clickToAddHistoryButton();
 
         verifyEquals(adminOrderDetailPage.getSuccessMessageText(adminDriver), "Success: You have modified orders!");
         adminOrderDetailPage.waitMessageAlertDisappeared(adminDriver);
-        verifyEquals(adminOrderDetailPage.getFirstStatusInHistoryTable("Status"), "Processing");
+        verifyEquals(adminOrderDetailPage.getFirstStatusInHistoryTable("Status"), "Shipped");
 
         adminOrdersPage = adminOrderDetailPage.clickToBackButton();
-        verifyEquals(adminOrdersPage.getOrderStatusByOrderId(String.valueOf(orderId)), "Processing");
+        verifyEquals(adminOrdersPage.getOrderStatusByOrderId(String.valueOf(orderId)), "Shipped");
 
         userOrderHistoryPage.refreshPage(userDriver);
-        verifyEquals(userOrderHistoryPage.getOrderStatus("Status"), "Processing");
+        verifyEquals(userOrderHistoryPage.getOrderStatus("Status"), "Shipped");
     }
 
-//    @AfterClass
-//    public void afterClass() {
-//        closeBrowserDriver();
-//    }
+    @AfterClass(alwaysRun = true)
+    public void afterClass() {
+        closeBrowserDriver(adminDriver);
+        closeBrowserDriver(userDriver);
+    }
 
     private UserHomePO userHomePage;
     private UserLoginPO userLoginPage;

@@ -111,7 +111,7 @@ public class Products_03_Form_AddProduct extends BaseTest {
     }
     @AfterClass
     public void afterClass() {
-        closeBrowserDriver();
+        closeBrowserDriver(userDriver);
     }
 
     private AdminLoginPO adminLoginPage;
