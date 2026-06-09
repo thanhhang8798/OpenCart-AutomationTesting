@@ -12,7 +12,7 @@ node {
     }
     stage('3 - Run test') {
         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-        bat "mvn test -Dbrowser=${params.BROWSER}"
+         bat 'mvn test'
         }
     }
     stage('4 - Public report') {
